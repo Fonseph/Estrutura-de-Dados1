@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+struct no
+{
+  char nome[40];
+  struct no *proximo;
+};
+
+typedef struct no No;
+
+No *prepararNo(char nome[]) // devolve um ponteiro de noh
+{
+  No *novo;
+  novo = (No *) malloc(sizeof(No)); // (No *) esta ocorrendo conversao de valores // sizeof calcula valor de No
+  if(novo == NULL)
+  {
+      printf("\n\aERRO. Acabou a memoria");
+      exit(1);
+  }
+  else
+  {
+    strcpy(novo->nome, nome);
+    novo->proximo = NULL;
+  }
+  return novo;
+}
+
+void inserirNoInicio(No **inicio, No *novo) // inicio por referencia ** e novo por valor mesmo, o ponteiro tambem é uma variavel
+{
+   novo->proximo = *inicio;
+   *inicio = novo;
+}
+
+void imprimirLista(No *inicio)
+{
+    if(inicio != NULL)
+    {
+        No *aux = inicio;
+        while(aux != NULL)
+        {
+            printf("\nNome: %s", aux->nome);
+
+            aux = aux->proximo;
+        }
+    }
+}
+
+int main()
+{
+  No *inicio;
+  inicio = NULL; // lista vazia
+  No *novo; // isso eh uma coisa soh
+  int vezes = 0;
+  char nome[40];
+
+  while(vezes++ < 5)
+  {
+      printf("\nDigite um nome: ");
+      gets(nome);
+      novo = prepararNo(nome); // malloc
+      inserirNoInicio(&inicio, novo); // preciso mandar por &referencia pq preciso alterar o valor ponteiro do inicio
+  }
+
+  imprimirLista(inicio);
+
+  return 1;
+}
